@@ -11,20 +11,4 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    /**
-     * @var array|string[]
-     */
-     
-    protected array $newsList = [
-        "News 1",
-        "News 2",
-        "<strong>News 3</strong>",
-        "News 4",
-        "<em>News 5</em>",
-        "News 6",
-        "News 7",
-        "News 8",
-        "News 9",
-        "News 10"
-    ];
 }

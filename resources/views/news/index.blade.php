@@ -5,17 +5,19 @@
     <div class="col-md-10 col-lg-8 col-xl-7">
 
         <!-- Post preview-->
-        @forelse ($newsList as $key => $news) 
+        @forelse ($news as $newsItem) 
 
         <div class="post-preview">
-            <a href="{{ route('news.show', ['id' => ++$key]) }}">
-                <h2 class="post-title">{!! $news !!}</h2>
-                <h3 class="post-subtitle">Problems look mighty small from 150 miles up</h3>
+            
+            <a href="{{ route('news.show', ['id' => $newsItem->id]) }}">
+                <h2 class="post-title">{!! $newsItem->title !!}</h2>
+                <h3 class="post-subtitle">{!! $newsItem->description !!}</h3>
             </a>
             <p class="post-meta">
                 Posted by
                 Admin
-                on {{ now() }}
+                on {{ $newsItem->created_at ?? now() }}
+                <i>Category: {{ $newsItem->category->title }}</i>
             </p>
         </div>
         @empty 

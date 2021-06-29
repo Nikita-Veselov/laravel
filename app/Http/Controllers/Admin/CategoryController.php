@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -14,7 +15,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return "Список категорий";
+        $categories = Category::where('is_visible', true)->paginate(5);
+
+        return view('admin.news.categories.index', ['categories' => $categories]);
     }
 
     /**
@@ -24,7 +27,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return "Создание категорий";
+        return view('admin.news.categories.create');
     }
 
     /**
@@ -35,7 +38,16 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->only('title', 'description', 'is_visible');
+
+        $category = Category::create($data);
+        if($category) {
+            return redirect()->route('admin.categories.index')
+            ->with('success', 'Categoty addition success');
+        }
+    
+        return back()->with('error', 'Category addition error');
+
     }
 
     /**
@@ -51,26 +63,38 @@ class CategoryController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
+     * 
+     * @param Category $category
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Category $category)
     {
-        return "Редактирование категорий";
+        return view('admin.news.categories.edit', [
+            'category' => $category
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  Category $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Category $category)
     {
-        //
+        $data = $request->only('title', 'description', 'is_visible');
+        $category = $category->fill($data)->save();
+
+        if($category) {
+            return redirect()->route('admin.categories.index')
+            ->with('success', 'Categoty editing success');
+        }
+    
+        return back()->with('error', 'Category editing error');
+
     }
+
 
     /**
      * Remove the specified resource from storage.

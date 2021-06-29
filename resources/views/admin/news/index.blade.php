@@ -3,8 +3,8 @@
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">News List</h1>
-        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+        <h1 class="h3 mb-0 text-gray-800">News List (Count: {{ $count }})</h1>
+        <a href="{{ route('admin.news.create') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                 class="fas fa-plus fa-sm text-white-50"></i>Add new report</a>
     </div>
 
@@ -23,11 +23,11 @@
 
             
 
-        @forelse ($newsList as $key => $news)
+        @forelse ($news as $newsItem)
             <tr>
-                <td>{{ $key }}</td>
-                <td>{!! $news !!}</td>
-                <td>{{ now() }}</td>
+                <td>{{ $newsItem->id }}</td>
+                <td>{{ $newsItem->title }}</td>
+                <td>{{ $newsItem->created_at }}</td>
                 <td>
                     <a href="">Edit</a> &nbsp;
                     <a href="">Delete</a> 

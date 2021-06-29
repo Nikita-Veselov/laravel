@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\News;
 use Illuminate\Http\Request;
 
 class NewsController extends Controller
@@ -14,9 +15,12 @@ class NewsController extends Controller
      */
     public function index()
     {
+        
+        $news = News::select('id', 'title', 'description', 'created_at')->get();
         return view('admin.news.index', [
-            'newsList' => $this->newsList
-        ]);
+            'news' => $news,
+            'count' => News::count()
+        ]);  
     }
 
     /**
@@ -37,7 +41,12 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+           'title' => ['required', 'string', 'min:3' ]
+        ]);
+        $allowFields = $request->only('title', 'slug', 'description');
+
+        return response()->json($allowFields);
     }
 
     /**
